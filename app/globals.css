@@ -1,4 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 @import "tailwindcss";
+
+@font-face {
+  font-family: 'pixelFont'; /* Dê um nome único e descritivo para sua fonte */
+  src: url('fonts/fontePixel.TTF') format('truetype'); /* Ajuste o caminho e o nome do arquivo */
+  font-weight: normal; /* Geralmente para fontes pixeladas, o peso é normal */
+  font-style: normal;  /* O estilo é normal */
+}
 
 :root {
   --background: #ffffff;
@@ -23,4 +31,34 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  -ms-interpolation-mode: nearest-neighbor; /* IE */
+  image-rendering: -webkit-optimize-contrast; /* Webkit (Safari, Chrome) */
+  image-rendering: crisp-edges; /* Firefox, Opera, IE (newer versions) */
+  image-rendering: pixelated; /* Chrome (newer versions), Edge */
+}
+
+.pixel-font {
+  font-family: pixelFont, 'Press Start 2P', cursive;
+}
+
+.title-shadow {
+  text-shadow: 4px 4px 0 #222, 8px 8px 0 #fff;
+}
+
+.outline {
+  -webkit-text-stroke: 2px #222;
+  text-stroke: 2px #222;
+}
+
+.pink {
+  color: #ff00c8;
+}
+.yellow {
+  color: #ffe600;
+}
+.green {
+  color: #00ff00;
+}
+.orange {
+  color: #ff8000;
 }
