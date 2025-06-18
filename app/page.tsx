@@ -20,6 +20,18 @@ export default function Ranking() {
       setPlayers(data || []);
     }
     fetchPlayers();
+
+    // Tentar tocar o áudio após um pequeno atraso
+    const audio = document.getElementById("theme-music") as HTMLAudioElement;
+    if (audio) {
+      // Usar setTimeout para dar tempo ao DOM carregar e talvez "enganar" algumas restrições
+      setTimeout(() => {
+        audio.play().catch((error) => {
+          console.error("Erro ao tentar tocar o áudio automaticamente:", error);
+          // Mensagem para o usuário se o autoplay falhar: "Por favor, clique em qualquer lugar para ativar o áudio."
+        });
+      }, 3500); // Tentar após 500ms
+    }
   }, []);
 
   return (
@@ -32,6 +44,7 @@ export default function Ranking() {
         alignItems: "center",
       }}
     >
+      <audio id="theme-music" src="/themeMusic.mp3" hidden />
       <div style={{ textAlign: "center" }}>
         <img src="/tituloPololand.png" alt="Poloand" style={{ width: 300, margin: "10px auto" }} />
         <img src="/subtitulo.png" alt="Poloand" style={{ width: 700, margin: "auto" }} />
