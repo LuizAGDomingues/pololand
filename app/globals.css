@@ -53,12 +53,31 @@ body {
 .pink {
   color: #ff00c8;
 }
+
 .yellow {
   color: #ffe600;
 }
+
 .green {
   color: #00ff00;
 }
+
 .orange {
   color: #ff8000;
+}
+
+.blue {
+  color: #0000ff;
+}
+
+.red {
+  color: #ff0000;
+}
+
+.purple {
+  color: #800080;
+}
+
+.cyan {
+  color: #00ffff;
 }

@@ -6,7 +6,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-const colors = ["pink", "yellow", "green", "orange"];
+const colors = ["pink", "yellow", "green", "orange", "blue", "red", "purple", "cyan"];
 
 export default function Ranking() {
   const [players, setPlayers] = useState<any[]>([]);
