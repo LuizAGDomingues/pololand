@@ -90,7 +90,7 @@ export default function Ranking() {
         }, duration * 1000);
         return {
           id,
-          top: 20 + Math.random() * 60,
+          top: Math.random() * 50,
           direction,
           duration,
         };
@@ -190,12 +190,13 @@ export default function Ranking() {
       {/* Container para as imagens dos personagens */}
       <div
         style={{
-          position: "absolute",
+          position: "fixed",
           bottom: 0,
           left: 0,
-          width: "100%",
-          height: "150px",
+          width: "100vw",
+          height: "clamp(80px, 15vh, 180px)",
           zIndex: 3,
+          pointerEvents: "none",
         }}
       >
         {players.map((player, index) =>
@@ -206,15 +207,19 @@ export default function Ranking() {
               alt={player.nick_consultor}
               className="character-image"
               style={{
-                position: 'absolute',
-                left: `${player.percentual}%`,
-                bottom: "60px",
-                transform: 'translateX(-50%)',
+                position: "absolute",
+                left: `calc(${player.percentual}% - 40px)`, // Mantém a lógica dinâmica aqui
+                maxHeight: "100%",
+                width: "auto",
+                objectFit: "contain",
                 animationDelay: `${index * 0.3}s`,
+                pointerEvents: "auto"
               }}
             />
           ) : null
         )}
+        <img src="/Trofeu.png" alt="imagem de trofeu" className="character-trofeu"/>
+        <img src="/celio.png" alt="imagem do celiao" className="character-celio"/>
       </div>
     </div>
   );
