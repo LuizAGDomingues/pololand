@@ -116,6 +116,33 @@ body {
   }
 }
 
+@keyframes slideIn {
+  from {
+    /* Estado inicial: fora da tela e invisível */
+    transform: translateX(-100px); /* Move 100px para baixo */
+    opacity: 0;
+  }
+  to {
+    /* Estado final: na posição original e visível */
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Classe para aplicar a animação aos personagens */
+.character-image {
+  position: relative; /* Necessário para o transform funcionar bem no flex container */
+  height: 100px;
+  width: auto;
+  opacity: 0; /* Começa invisível por padrão */
+
+  /* Define as propriedades da animação */
+  animation-name: slideIn;
+  animation-duration: 0.7s; /* Duração da animação */
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards; /* Mantém o estado final da animação */
+}
+
 .player-entry {
   opacity: 0; 
   

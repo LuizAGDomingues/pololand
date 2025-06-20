@@ -147,22 +147,21 @@ export default function Ranking() {
           zIndex: 3, // Garante que fique acima da opacidade
         }}
       >
-        {players.map((player) =>
-          // Renderiza a imagem apenas se a URL foi encontrada
+        {players.map((player, index) =>
           player.imageUrl ? (
             <img
               key={`char-${player.nome_consultor}`}
               src={player.imageUrl}
               alt={player.nick_consultor}
+              // APLICANDO A CLASSE CSS
+              className="character-image" 
               style={{
-                // 4. ESTILO DE POSICIONAMENTO DINÂMICO
-                position: "absolute",
-                bottom: "65px", // Um pequeno espaçamento da borda inferior
-                left: `${player.percentual}%`, // Define a posição horizontal com base no percentual
-                transform: "translateX(-50%)", // Centraliza a imagem no ponto percentual
-                height: "100px", // Tamanho da imagem, ajuste conforme necessário
-                width: "auto",
-                animation: "left 2s ease-out", // Animação suave para a posição
+                // ESTILO INLINE APENAS PARA O QUE É DINÂMICO
+                position: 'absolute',
+                left: `${player.percentual}%`,
+                bottom: "60px",
+                transform: 'translateX(-50%)', // Centraliza a imagem no percentual
+                animationDelay: `${index * 0.3}s`, // Atraso dinâmico para cada personagem
               }}
             />
           ) : null
