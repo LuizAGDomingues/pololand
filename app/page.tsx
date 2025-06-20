@@ -27,9 +27,18 @@ interface PlayerWithImage {
   imageUrl?: string; // A URL da imagem pode ser opcional
 }
 
+// Substituir o tipo do estado clouds para um array de objetos simples
+interface Cloud {
+  id: number;
+  top: number; // porcentagem
+  direction: 'right' | 'left';
+  duration: number; // segundos
+}
+
 export default function Ranking() {
   // Usamos a interface PlayerWithImage para o estado
   const [players, setPlayers] = useState<PlayerWithImage[]>([]);
+  const [clouds, setClouds] = useState<Cloud[]>([])
 
   useEffect(() => {
     async function fetchAndProcessPlayers() {
@@ -37,32 +46,29 @@ export default function Ranking() {
         .from("players")
         .select("nome_consultor, nick_consultor, percentual")
         .order("percentual", { ascending: false });
-
+  
       if (error) {
         console.error("Erro ao buscar jogadores:", error);
         return;
       }
-
+  
       if (playersData) {
-        // 2. MESCLAR DADOS DO SUPABASE COM O JSON
         const combinedData = playersData.map((player) => {
-          // Encontra o personagem correspondente no JSON
           const personagem = (personagensData as Personagem[]).find(
             (p) => p.nome === player.nome_consultor
           );
-          
+  
           return {
             ...player,
-            // Adiciona a URL da imagem ao objeto do jogador
             imageUrl: personagem ? personagem.url : undefined,
           };
         });
         setPlayers(combinedData);
       }
     }
-
+  
     fetchAndProcessPlayers();
-
+  
     const audio = document.getElementById("theme-music") as HTMLAudioElement;
     if (audio) {
       setTimeout(() => {
@@ -71,6 +77,30 @@ export default function Ranking() {
         });
       }, 5000);
     }
+  
+    const addClouds = () => {
+      const numClouds = 1 + Math.floor(Math.random() * 2); // 1 ou 2
+      const newClouds: Cloud[] = Array.from({ length: numClouds }, (_, i) => {
+        const direction = Math.random() < 0.5 ? 'right' : 'left';
+        const duration = 10 + Math.random() * 10; // entre 10s e 20s
+        const id = Date.now() + Math.random();
+        // Agenda remoção da nuvem após o tempo de animação
+        setTimeout(() => {
+          setClouds((prev) => prev.filter((cloud) => cloud.id !== id));
+        }, duration * 1000);
+        return {
+          id,
+          top: 20 + Math.random() * 60,
+          direction,
+          duration,
+        };
+      });
+      setClouds((prev) => [...prev, ...newClouds]);
+    };
+    const cloudInterval = setInterval(addClouds, 10000);
+    // Inicializa com 1 ou 2 nuvens
+    addClouds();
+    return () => clearInterval(cloudInterval);
   }, []);
 
   return (
@@ -82,9 +112,10 @@ export default function Ranking() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        overflow: "hidden", // Importante para não criar scrollbars com as imagens
+        overflow: "hidden", // Importante para as nuvens não criarem scroll
       }}
     >
+
       {/* Camada de opacidade */}
       <div
         style={{
@@ -98,7 +129,27 @@ export default function Ranking() {
           pointerEvents: "none",
         }}
       />
+
+      {/* Container para as nuvens animadas */}
+      <div className="cloudContainer">
+        {clouds.map((cloud) => (
+          <img
+            key={cloud.id}
+            src="/nuvem.png"
+            alt="Nuvem"
+            className={`cloud ${cloud.direction}`}
+            style={{
+              top: `${cloud.top}%`,
+              zIndex: 2,
+              animationDuration: `${cloud.duration}s`,
+            }}
+          />
+        ))}
+      </div>
+
       <audio id="theme-music" src="/themeMusic.mp3" hidden />
+
+      {/* Conteúdo Principal da Página */}
       <div style={{ textAlign: "center", position: "relative", zIndex: 2 }}>
         <img src="/tituloPololand.png" alt="Poloand" style={{ width: 210, margin: "10px auto" }} />
         <img src="/subtitulo.png" alt="High Scores" style={{ width: 600, margin: "auto", animation: "pulsar 4s ease-in-out infinite" }} />
@@ -136,15 +187,15 @@ export default function Ranking() {
         </div>
       </div>
 
-      {/* 3. CONTAINER PARA AS IMAGENS DOS PERSONAGENS */}
+      {/* Container para as imagens dos personagens */}
       <div
         style={{
           position: "absolute",
-          bottom: 0, // Fixa na parte inferior
+          bottom: 0,
           left: 0,
           width: "100%",
-          height: "150px", // Altura do container, ajuste conforme necessário
-          zIndex: 3, // Garante que fique acima da opacidade
+          height: "150px",
+          zIndex: 3,
         }}
       >
         {players.map((player, index) =>
@@ -153,15 +204,13 @@ export default function Ranking() {
               key={`char-${player.nome_consultor}`}
               src={player.imageUrl}
               alt={player.nick_consultor}
-              // APLICANDO A CLASSE CSS
-              className="character-image" 
+              className="character-image"
               style={{
-                // ESTILO INLINE APENAS PARA O QUE É DINÂMICO
                 position: 'absolute',
                 left: `${player.percentual}%`,
                 bottom: "60px",
-                transform: 'translateX(-50%)', // Centraliza a imagem no percentual
-                animationDelay: `${index * 0.3}s`, // Atraso dinâmico para cada personagem
+                transform: 'translateX(-50%)',
+                animationDelay: `${index * 0.3}s`,
               }}
             />
           ) : null
