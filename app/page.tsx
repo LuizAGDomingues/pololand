@@ -155,8 +155,8 @@ export default function Ranking() {
 
         {/* Conteúdo Principal da Página */}
         <div style={{ textAlign: "center", position: "relative", zIndex: 2 }}>
-          <img src="/tituloPololand.png" alt="Poloand" style={{ width: 210, margin: "10px auto" }} />
-          <img src="/subtitulo.png" alt="High Scores" style={{ width: 600, margin: "auto", animation: "pulsar 4s ease-in-out infinite" }} />
+          <img src="/tituloPololand.png" alt="Poloand" className="title-img" style={{ margin: "10px auto" }} />
+          <img src="/subtitulo.png" alt="High Scores" className="subtitle-img" style={{ margin: "auto", animation: "pulsar 4s ease-in-out infinite" }} />
           <div style={{ marginTop: 6 }}>
             {players.map((player, idx) => (
               <div
