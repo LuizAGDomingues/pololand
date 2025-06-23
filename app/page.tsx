@@ -41,6 +41,9 @@ export default function Ranking() {
   const [players, setPlayers] = useState<PlayerWithImage[]>([]);
   const [clouds, setClouds] = useState<Cloud[]>([])
   const [loadedPlayers, setLoadedPlayers] = useState(0);
+  const [jumping, setJumping] = useState<{ [key: string]: boolean }>({});
+  const [entered, setEntered] = useState<{ [key: string]: boolean }>({});
+  const moedaAudioRef = useRef<HTMLAudioElement | null>(null);
 
   // Garante que o contador reseta ao mudar os players
   useEffect(() => {
@@ -250,27 +253,43 @@ export default function Ranking() {
       >
         {players.map((player, index) =>
           player.imageUrl ? (
-            <Image
+            <img
               key={`char-${player.nome_consultor}`}
               src={player.imageUrl}
               alt={player.nick_consultor}
-              className={`character-image-base${allPlayersLoaded ? ' character-image' : ''}`}
+              className={`character-image-base${!entered[player.nome_consultor] ? ' character-image' : ''}${jumping[player.nome_consultor] ? ' character-jump' : ''}${entered[player.nome_consultor] && !jumping[player.nome_consultor] ? ' character-visible' : ''}`}
               width={80}
               height={80}
               style={{
                 position: "absolute",
                 left: `calc(${player.percentual}% - 40px)`,
                 objectFit: "contain",
-                animationDelay: `${index * 0.3}s`,
+                ...( !entered[player.nome_consultor] ? { animationDelay: `${index * 0.3}s` } : {} ),
                 pointerEvents: "auto"
               }}
-              onLoadingComplete={() => setLoadedPlayers(count => count + 1)}
+              onLoad={() => setLoadedPlayers(count => count + 1)}
+              onAnimationEnd={e => {
+                if (e.animationName === "slideIn") {
+                  setEntered(eMap => ({ ...eMap, [player.nome_consultor]: true }));
+                }
+              }}
+              onClick={() => {
+                setJumping(j => ({ ...j, [player.nome_consultor]: true }));
+                if (moedaAudioRef.current) {
+                  moedaAudioRef.current.currentTime = 0;
+                  moedaAudioRef.current.play();
+                }
+                setTimeout(() => {
+                  setJumping(j => ({ ...j, [player.nome_consultor]: false }));
+                }, 700);
+              }}
             />
           ) : null
         )}
         <Image src="/Trofeu.png" alt="imagem de trofeu" className="character-trofeu" style={{ pointerEvents: "auto" }} width={110} height={110} />
         <Image src="/celio.png" alt="imagem do celiao" className="character-celio" style={{ pointerEvents: "auto" }} width={110} height={110} />
       </div>
+      <audio ref={moedaAudioRef} src="/moeda.mp3" preload="auto" />
     </div>
   );
 }
