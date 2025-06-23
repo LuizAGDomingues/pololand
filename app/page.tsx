@@ -104,98 +104,130 @@ export default function Ranking() {
   }, []);
 
   return (
-    <div
-      style={{
-        position: "relative",
-        minHeight: "100vh",
-        background: "url('/bg-pixel.png') center/cover no-repeat, #7ec0ee",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        overflow: "hidden", // Importante para as nuvens não criarem scroll
-      }}
-    >
+    <div>
+      <div
+        style={{
+          position: "relative",
+          height: "100vh",
+          width: "100%",
+          backgroundColor: "#7ec0ee",
+          backgroundImage: "url('/fundoNuvens.png')",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          overflow: "hidden", // Importante para as nuvens não criarem scroll
+        }}
+      >
 
-      {/* Camada de opacidade */}
+        {/* Camada de opacidade */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background: "rgba(128, 128, 128, 0.3)",
+            zIndex: 1,
+            pointerEvents: "none",
+          }}
+        />
+        {/* Container para as nuvens animadas */}
+        <div className="cloudContainer">
+          {clouds.map((cloud) => (
+            <img
+              key={cloud.id}
+              src="/nuvem.png"
+              alt="Nuvem"
+              className={`cloud ${cloud.direction}`}
+              style={{
+                top: `${cloud.top}%`,
+                zIndex: 2,
+                animationDuration: `${cloud.duration}s`,
+              }}
+            />
+          ))}
+        </div>
+
+        <audio id="theme-music" src="/themeMusic.mp3" hidden loop/>
+
+        {/* Conteúdo Principal da Página */}
+        <div style={{ textAlign: "center", position: "relative", zIndex: 2 }}>
+          <img src="/tituloPololand.png" alt="Poloand" style={{ width: 210, margin: "10px auto" }} />
+          <img src="/subtitulo.png" alt="High Scores" style={{ width: 600, margin: "auto", animation: "pulsar 4s ease-in-out infinite" }} />
+          <div style={{ marginTop: 6 }}>
+            {players.map((player, idx) => (
+              <div
+                key={player.nome_consultor}
+                className={`player-entry ${idx === 0 ? 'first-place' : ''}`}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  fontSize: 24,
+                  marginBottom: 10,
+                  gap: 12,
+                  animationDelay: `${idx * 0.2}s`
+                }}
+              >
+                {idx === 0 && (
+                  <img
+                    src="/coroa.png"
+                    alt="Coroa do primeiro lugar"
+                    style={{ width: '34px' }}
+                    className="crown-icon"
+                  />
+                )}
+                <span className={`pixel-font ${colors[idx % colors.length]}`}>
+                  {player.nick_consultor} ({player.nome_consultor})
+                </span>
+                <span className={`pixel-font ${colors[idx % colors.length]}`}>
+                  {player.percentual}%
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      <img
+        src="/tijolos.png"
+        alt="Tijolos do fundo"
+        style={{
+          position: "absolute",
+          left: 0,
+          bottom: 0,
+          width: "100%",
+          height: "10vh",
+          objectFit: "cover",
+          zIndex: 2,
+          pointerEvents: "none",
+          margin: 0,
+          padding: 0,
+        }}
+      />
+      <img
+        src="/fundoDetalhes.png"
+        alt="Detalhes do fundo"
+        style={{
+          position: "absolute",
+          left: 0,
+          bottom: "10%",
+          width: "100%",
+          height: "auto",
+          zIndex: 3,
+          pointerEvents: "none"
+        }}
+      />
       <div
         style={{
           position: "absolute",
-          top: 0,
           left: 0,
-          width: "100%",
-          height: "100%",
-          background: "rgba(128, 128, 128, 0.3)",
-          zIndex: 1,
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* Container para as nuvens animadas */}
-      <div className="cloudContainer">
-        {clouds.map((cloud) => (
-          <img
-            key={cloud.id}
-            src="/nuvem.png"
-            alt="Nuvem"
-            className={`cloud ${cloud.direction}`}
-            style={{
-              top: `${cloud.top}%`,
-              zIndex: 2,
-              animationDuration: `${cloud.duration}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      <audio id="theme-music" src="/themeMusic.mp3" hidden />
-
-      {/* Conteúdo Principal da Página */}
-      <div style={{ textAlign: "center", position: "relative", zIndex: 2 }}>
-        <img src="/tituloPololand.png" alt="Poloand" style={{ width: 210, margin: "10px auto" }} />
-        <img src="/subtitulo.png" alt="High Scores" style={{ width: 600, margin: "auto", animation: "pulsar 4s ease-in-out infinite" }} />
-        <div style={{ marginTop: 6 }}>
-          {players.map((player, idx) => (
-            <div
-              key={player.nome_consultor}
-              className={`player-entry ${idx === 0 ? 'first-place' : ''}`}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                fontSize: 24,
-                marginBottom: 10,
-                gap: 12,
-                animationDelay: `${idx * 0.2}s`
-              }}
-            >
-              {idx === 0 && (
-                <img
-                  src="/coroa.png"
-                  alt="Coroa do primeiro lugar"
-                  style={{ width: '34px' }}
-                  className="crown-icon"
-                />
-              )}
-              <span className={`pixel-font ${colors[idx % colors.length]}`}>
-                {player.nick_consultor} ({player.nome_consultor})
-              </span>
-              <span className={`pixel-font ${colors[idx % colors.length]}`}>
-                {player.percentual}%
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Container para as imagens dos personagens */}
-      <div
-        style={{
-          position: "fixed",
           bottom: 0,
-          left: 0,
-          width: "100vw",
-          height: "clamp(80px, 15vh, 180px)",
-          zIndex: 3,
+          width: "100%",
+          height: "10vh",
+          zIndex: 4,
           pointerEvents: "none",
         }}
       >
@@ -208,7 +240,7 @@ export default function Ranking() {
               className="character-image"
               style={{
                 position: "absolute",
-                left: `calc(${player.percentual}% - 40px)`, // Mantém a lógica dinâmica aqui
+                left: `calc(${player.percentual}% - 40px)`,
                 maxHeight: "100%",
                 width: "auto",
                 objectFit: "contain",
@@ -218,8 +250,8 @@ export default function Ranking() {
             />
           ) : null
         )}
-        <img src="/Trofeu.png" alt="imagem de trofeu" className="character-trofeu"/>
-        <img src="/celio.png" alt="imagem do celiao" className="character-celio"/>
+        <img src="/Trofeu.png" alt="imagem de trofeu" className="character-trofeu" style={{ pointerEvents: "auto" }} />
+        <img src="/celio.png" alt="imagem do celiao" className="character-celio" style={{ pointerEvents: "auto" }} />
       </div>
     </div>
   );
