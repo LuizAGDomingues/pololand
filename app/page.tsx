@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
+import Image from "next/image";
 
 // 1. IMPORTAR O ARQUIVO JSON
 // Certifique-se de que o caminho para o arquivo JSON está correto
@@ -155,8 +156,8 @@ export default function Ranking() {
 
         {/* Conteúdo Principal da Página */}
         <div style={{ textAlign: "center", position: "relative", zIndex: 2 }}>
-          <img src="/tituloPololand.png" alt="Poloand" className="title-img" style={{ margin: "10px auto" }} />
-          <img src="/subtitulo.png" alt="High Scores" className="subtitle-img" style={{ margin: "auto", animation: "pulsar 4s ease-in-out infinite" }} />
+          <Image src="/tituloPololand.png" alt="Poloand" className="title-img" style={{ margin: "10px auto" }} width={210} height={80} priority />
+          <Image src="/subtitulo.png" alt="High Scores" className="subtitle-img" style={{ margin: "auto", animation: "pulsar 4s ease-in-out infinite" }} width={600} height={60} priority />
           <div style={{ marginTop: 6 }}>
             {players.map((player, idx) => (
               <div
@@ -191,7 +192,7 @@ export default function Ranking() {
           </div>
         </div>
       </div>
-      <img
+      <Image
         src="/tijolos.png"
         alt="Tijolos do fundo"
         style={{
@@ -206,8 +207,11 @@ export default function Ranking() {
           margin: 0,
           padding: 0,
         }}
+        width={1920}
+        height={108}
+        priority
       />
-      <img
+      <Image
         src="/fundoDetalhes.png"
         alt="Detalhes do fundo"
         style={{
@@ -219,6 +223,9 @@ export default function Ranking() {
           zIndex: 3,
           pointerEvents: "none"
         }}
+        width={1920}
+        height={108}
+        priority
       />
       <div
         style={{
@@ -233,16 +240,16 @@ export default function Ranking() {
       >
         {players.map((player, index) =>
           player.imageUrl ? (
-            <img
+            <Image
               key={`char-${player.nome_consultor}`}
               src={player.imageUrl}
               alt={player.nick_consultor}
               className="character-image"
+              width={80}
+              height={80}
               style={{
                 position: "absolute",
                 left: `calc(${player.percentual}% - 40px)`,
-                maxHeight: "100%",
-                width: "auto",
                 objectFit: "contain",
                 animationDelay: `${index * 0.3}s`,
                 pointerEvents: "auto"
@@ -250,8 +257,8 @@ export default function Ranking() {
             />
           ) : null
         )}
-        <img src="/Trofeu.png" alt="imagem de trofeu" className="character-trofeu" style={{ pointerEvents: "auto" }} />
-        <img src="/celio.png" alt="imagem do celiao" className="character-celio" style={{ pointerEvents: "auto" }} />
+        <Image src="/Trofeu.png" alt="imagem de trofeu" className="character-trofeu" style={{ pointerEvents: "auto" }} width={110} height={110} />
+        <Image src="/celio.png" alt="imagem do celiao" className="character-celio" style={{ pointerEvents: "auto" }} width={110} height={110} />
       </div>
     </div>
   );
