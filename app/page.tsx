@@ -116,6 +116,7 @@ export default function Ranking() {
   return (
     <div>
       <div
+        className="main-container"
         style={{
           position: "relative",
           height: "100vh",

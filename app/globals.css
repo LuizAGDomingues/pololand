@@ -258,6 +258,16 @@ pointer-events: none;
 
 /* Mobile: até 600px */
 @media (max-width: 600px) {
+  html, body {
+    width: 100vw;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    background: var(--background);
+  }
+  .main-container {
+    min-height: 100dvh !important;
+    width: 100vw !important;
+  }
   .pixel-font {
     font-size: 10px !important;
   }
