@@ -133,6 +133,16 @@ html, body {
   }
 }
 
+/* Classe base para personagens, sem animação */
+.character-image-base {
+  position: absolute;
+  height: clamp(100px, 10vh, 120px);
+  width: auto;
+  opacity: 0;
+  bottom: 95%;
+  z-index: 2;
+}
+
 /* Classe para aplicar a animação aos personagens */
 .character-image {
   position: absolute;

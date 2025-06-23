@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { createClient } from "@supabase/supabase-js";
 import Image from "next/image";
 
@@ -40,6 +40,15 @@ export default function Ranking() {
   // Usamos a interface PlayerWithImage para o estado
   const [players, setPlayers] = useState<PlayerWithImage[]>([]);
   const [clouds, setClouds] = useState<Cloud[]>([])
+  const [loadedPlayers, setLoadedPlayers] = useState(0);
+
+  // Garante que o contador reseta ao mudar os players
+  useEffect(() => {
+    setLoadedPlayers(0);
+  }, [players]);
+
+  const totalPlayersWithImage = players.filter(p => p.imageUrl).length;
+  const allPlayersLoaded = loadedPlayers === totalPlayersWithImage && totalPlayersWithImage > 0;
 
   useEffect(() => {
     async function fetchAndProcessPlayers() {
@@ -244,7 +253,7 @@ export default function Ranking() {
               key={`char-${player.nome_consultor}`}
               src={player.imageUrl}
               alt={player.nick_consultor}
-              className="character-image"
+              className={`character-image-base${allPlayersLoaded ? ' character-image' : ''}`}
               width={80}
               height={80}
               style={{
@@ -254,6 +263,7 @@ export default function Ranking() {
                 animationDelay: `${index * 0.3}s`,
                 pointerEvents: "auto"
               }}
+              onLoadingComplete={() => setLoadedPlayers(count => count + 1)}
             />
           ) : null
         )}
