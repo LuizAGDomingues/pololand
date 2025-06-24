@@ -138,34 +138,70 @@ html, body {
     transform: translateY(0);
   }
   10% {
-    transform: translateY(-30px);
+    transform: translateY(-10px);
   }
   20% {
-    transform: translateY(-60px);
+    transform: translateY(-20px);
   }
   30% {
-    transform: translateY(-80px);
+    transform: translateY(-40px);
   }
   40% {
-    transform: translateY(-90px);
+    transform: translateY(-50px);
   }
   50% {
-    transform: translateY(-100px);
-  }
-  60% {
-    transform: translateY(-90px);
-  }
-  70% {
-    transform: translateY(-80px);
-  }
-  80% {
     transform: translateY(-60px);
   }
+  60% {
+    transform: translateY(-50px);
+  }
+  70% {
+    transform: translateY(-40px);
+  }
+  80% {
+    transform: translateY(-20px);
+  }
   90% {
-    transform: translateY(-30px);
+    transform: translateY(-10px);
   }
   100% {
     transform: translateY(0);
+  }
+}
+
+@keyframes moeda-jump {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+    z-index: 10;
+  }
+  10% {
+    opacity: 1;
+  }
+  20% {
+    transform: translateY(-40px);
+    opacity: 1;
+  }
+  40% {
+    transform: translateY(-120px);
+    opacity: 1;
+  }
+  60% {
+    transform: translateY(-140px);
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(-120px);
+    opacity: 1;
+  }
+  90% {
+    transform: translateY(-40px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0;
+    z-index: 10;
   }
 }
 
@@ -175,7 +211,7 @@ html, body {
   height: clamp(100px, 10vh, 120px);
   width: auto;
   opacity: 0;
-  bottom: 95%;
+  bottom: 72%;
   z-index: 2;
 }
 
@@ -390,4 +426,28 @@ pointer-events: none;
 .character-jump,
 .character-visible {
   cursor: pointer;
+}
+
+.moeda-jump {
+  animation: moeda-jump 0.7s cubic-bezier(0.28, 0.84, 0.42, 1) 1;
+  position: absolute;
+  left: 30%;
+  bottom: 90%;
+  transform: translateX(-50%) translateY(0);
+  z-index: 10;
+  pointer-events: none;
+  width: 40px;
+  height: 40px;
+}
+
+.moeda-base {
+  position: absolute;
+  left: 10%;
+  bottom: 90%;
+  transform: translateX(-50%);
+  opacity: 0;
+  width: 40px;
+  height: 40px;
+  pointer-events: none;
+  z-index: 10;
 }

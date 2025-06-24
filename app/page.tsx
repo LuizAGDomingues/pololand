@@ -44,6 +44,7 @@ export default function Ranking() {
   const [jumping, setJumping] = useState<{ [key: string]: boolean }>({});
   const [entered, setEntered] = useState<{ [key: string]: boolean }>({});
   const moedaAudioRef = useRef<HTMLAudioElement | null>(null);
+  const [moedaJump, setMoedaJump] = useState<{ [key: string]: boolean }>({});
 
   // Garante que o contador reseta ao mudar os players
   useEffect(() => {
@@ -253,37 +254,62 @@ export default function Ranking() {
       >
         {players.map((player, index) =>
           player.imageUrl ? (
-            <img
-              key={`char-${player.nome_consultor}`}
-              src={player.imageUrl}
-              alt={player.nick_consultor}
-              className={`character-image-base${!entered[player.nome_consultor] ? ' character-image' : ''}${jumping[player.nome_consultor] ? ' character-jump' : ''}${entered[player.nome_consultor] && !jumping[player.nome_consultor] ? ' character-visible' : ''}`}
-              width={80}
-              height={80}
+            <div
+              key={`char-wrap-${player.nome_consultor}`}
               style={{
                 position: "absolute",
                 left: `calc(${player.percentual}% - 40px)`,
-                objectFit: "contain",
-                ...( !entered[player.nome_consultor] ? { animationDelay: `${index * 0.3}s` } : {} ),
-                pointerEvents: "auto"
+                bottom: 0,
+                width: 80,
+                height: 80,
+                display: "flex",
+                alignItems: "flex-end",
+                justifyContent: "center",
+                pointerEvents: "auto",
+                overflow: "visible"
               }}
-              onLoad={() => setLoadedPlayers(count => count + 1)}
-              onAnimationEnd={e => {
-                if (e.animationName === "slideIn") {
-                  setEntered(eMap => ({ ...eMap, [player.nome_consultor]: true }));
-                }
-              }}
-              onClick={() => {
-                setJumping(j => ({ ...j, [player.nome_consultor]: true }));
-                if (moedaAudioRef.current) {
-                  moedaAudioRef.current.currentTime = 0;
-                  moedaAudioRef.current.play();
-                }
-                setTimeout(() => {
-                  setJumping(j => ({ ...j, [player.nome_consultor]: false }));
-                }, 700);
-              }}
-            />
+            >
+              {/* Moeda animada */}
+              <img
+                src="/moeda.png"
+                alt="Moeda"
+                className={`moeda-base${moedaJump[player.nome_consultor] ? ' moeda-jump' : ''}`}
+                draggable={false}
+                onAnimationEnd={() => setMoedaJump(m => ({ ...m, [player.nome_consultor]: false }))}
+              />
+              {/* Personagem */}
+              <img
+                src={player.imageUrl}
+                alt={player.nick_consultor}
+                className={`character-image-base${!entered[player.nome_consultor] ? ' character-image' : ''}${jumping[player.nome_consultor] ? ' character-jump' : ''}${entered[player.nome_consultor] && !jumping[player.nome_consultor] ? ' character-visible' : ''}`}
+                width={80}
+                height={80}
+                style={{
+                  position: "relative",
+                  zIndex: 20,
+                  objectFit: "contain",
+                  ...( !entered[player.nome_consultor] ? { animationDelay: `${index * 0.3}s` } : {} ),
+                  cursor: "pointer"
+                }}
+                onLoad={() => setLoadedPlayers(count => count + 1)}
+                onAnimationEnd={e => {
+                  if (e.animationName === "slideIn") {
+                    setEntered(eMap => ({ ...eMap, [player.nome_consultor]: true }));
+                  }
+                }}
+                onClick={() => {
+                  setJumping(j => ({ ...j, [player.nome_consultor]: true }));
+                  setMoedaJump(m => ({ ...m, [player.nome_consultor]: true }));
+                  if (moedaAudioRef.current) {
+                    moedaAudioRef.current.currentTime = 0;
+                    moedaAudioRef.current.play();
+                  }
+                  setTimeout(() => {
+                    setJumping(j => ({ ...j, [player.nome_consultor]: false }));
+                  }, 700);
+                }}
+              />
+            </div>
           ) : null
         )}
         <Image src="/Trofeu.png" alt="imagem de trofeu" className="character-trofeu" style={{ pointerEvents: "auto" }} width={110} height={110} />
