@@ -196,9 +196,6 @@ export default function Ranking() {
                   />
                 )}
                 <span className={`pixel-font ${colors[idx % colors.length]}`}>
-                  {player.nick_consultor} ({player.nome_consultor})
-                </span>
-                <span className={`pixel-font ${colors[idx % colors.length]}`}>
                   {player.percentual}%
                 </span>
               </div>
