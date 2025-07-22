@@ -23,7 +23,6 @@ interface Personagem {
 // Definindo a interface para os dados combinados dos jogadores
 interface PlayerWithImage {
   nome_consultor: string;
-  nick_consultor: string;
   percentual: number;
   imageUrl?: string; // A URL da imagem pode ser opcional
 }
@@ -58,7 +57,7 @@ export default function Ranking() {
     async function fetchAndProcessPlayers() {
       const { data: playersData, error } = await supabase
         .from("players")
-        .select("nome_consultor, nick_consultor, percentual")
+        .select("nome_consultor, percentual")
         .order("percentual", { ascending: false });
   
       if (error) {
@@ -196,7 +195,7 @@ export default function Ranking() {
                   />
                 )}
                 <span className={`pixel-font ${colors[idx % colors.length]}`}>
-                  {player.percentual}%
+                  {player.nome_consultor} — {player.percentual}%
                 </span>
               </div>
             ))}
@@ -277,7 +276,7 @@ export default function Ranking() {
               {/* Personagem */}
               <img
                 src={player.imageUrl}
-                alt={player.nick_consultor}
+                alt={player.nome_consultor}
                 className={`character-image-base${!entered[player.nome_consultor] ? ' character-image' : ''}${jumping[player.nome_consultor] ? ' character-jump' : ''}${entered[player.nome_consultor] && !jumping[player.nome_consultor] ? ' character-visible' : ''}`}
                 width={80}
                 height={80}
